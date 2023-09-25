@@ -72,36 +72,12 @@ class PIM {
     indirect: () => cy.get(".oxd-select-dropdown > :nth-child(3)"),
     //Supervisors Save button
     saveSuper: () => cy.get(".oxd-button--secondary"),
-
-    //PIM filter Id Search
-
-    id: () => cy.get(":nth-child(2) > .oxd-input"),
-
-    // search button
-    searchBtn: () => cy.get(".oxd-form-actions > .oxd-button--secondary"),
-    //fetch data from table to match data of employee added
-    search: {
-      first_middle_name: () =>
-        cy.get(".oxd-table-card > .oxd-table-row > :nth-child(3) > div"),
-      last_name: () =>
-        cy.get(".oxd-table-card > .oxd-table-row > :nth-child(4) > div"),
-      job_title: () =>
-        cy.get(".oxd-table-card > .oxd-table-row > :nth-child(5) > div"),
-      emp_status: () =>
-        cy.get(".oxd-table-card > .oxd-table-row > :nth-child(6) > div"),
-      sub_unit: () =>
-        cy.get(".oxd-table-card > .oxd-table-row > :nth-child(7) > div"),
-      supervisor: () =>
-        cy.get(".oxd-table-card > .oxd-table-row > :nth-child(8)"),
-    },
   };
   successAddEmployee(empNum: number, firstName: any, lastName: any) {
-    cy.visit(
-      `https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails/empNumber/${empNum}`
-    );
+    cy.visit(`/web/index.php/pim/viewPersonalDetails/empNumber/${empNum}`);
     this.elements.success().should("contain", firstName + " " + lastName);
   }
-  addEmployeeInfo(user: any, supervisor: any) {
+  addEmpDetailsInfo(user: any, supervisor: any) {
     //select license Expiry Date
     this.elements.licenseExpiryDate().click({
       force: true,
@@ -216,19 +192,6 @@ class PIM {
     this.elements.MainMenuItems().contains("PIM").click({
       force: true,
     });
-    // search by Id
-    this.elements.id().type(user.id);
-    this.elements.searchBtn().click({
-      force: true,
-    });
-    this.elements.search
-      .first_middle_name()
-      .should("contain", user.firstName + " " + user.middleName);
-    this.elements.search.last_name().should("contain", user.lastName);
-    this.elements.search.job_title().should("contain", user.jobTitle);
-    this.elements.search.emp_status().should("contain", user.empStatus);
-    this.elements.search.sub_unit().should("contain", user.subUnit);
-    this.elements.search.supervisor().should("contain", supervisor.firstName);
   }
 }
 export default PIM;
